@@ -1,0 +1,8 @@
+POST http://localhost:3000/api/incidents
+Content-Type: application/json
+
+{
+  "affected_node_id": "A01",
+  "severity": "CRITICAL",
+  "description": "Oracle DB Cluster is unresponsive. All 3 RAC nodes failing to respond. ASM disk group corruption detected."
+}

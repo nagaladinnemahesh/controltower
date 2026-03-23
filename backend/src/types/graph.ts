@@ -58,3 +58,30 @@ export interface ImpactAnalysis {
   totalImpacted: number;
   impactedNodes: ImpactedNode[];
 }
+
+// Severity levels for incidents
+export type IncidentSeverity = "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
+
+// Incident lifecycle status
+export type IncidentStatus = "OPEN" | "IN_PROGRESS" | "RESOLVED";
+
+// Shape of an incident record
+export interface Incident {
+  id: string;
+  affected_node_id: string;
+  affected_node_name: string;
+  severity: IncidentSeverity;
+  status: IncidentStatus;
+  description: string;
+  ai_recommendation: string | null;
+  resolution: string | null;
+  created_at: Date;
+  resolved_at: Date | null;
+}
+
+// Shape of the request body when creating a new incident
+export interface CreateIncidentBody {
+  affected_node_id: string;
+  severity: IncidentSeverity;
+  description: string;
+}
