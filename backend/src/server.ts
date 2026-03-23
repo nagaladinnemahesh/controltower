@@ -1,6 +1,7 @@
 import Fastify from "fastify";
 import dotenv from "dotenv";
 import neo4jPlugin from "./plugins/neo4j";
+import graphRoutes from "./modules/assets/graph.routes";
 
 dotenv.config();
 
@@ -9,6 +10,9 @@ const app = Fastify({ logger: true });
 
 //register neo4j plugins
 app.register(neo4jPlugin);
+
+// register routes with /api/graph prefix
+app.register(graphRoutes, { prefix: "/api/graph" });
 
 app.get("/health", async (request, reply) => {
   return { status: "Ok", message: "Control Tower is running" };
