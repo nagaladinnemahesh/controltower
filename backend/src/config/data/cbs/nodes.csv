@@ -1,0 +1,60 @@
+id,label,name,status,detail
+A01,ITAsset,Oracle DB Cluster,HEALTHY,Primary database cluster
+A02,ITAsset,App Server,HEALTHY,Application server handling requests
+A03,ITAsset,Storage Array,HEALTHY,Primary storage for all data
+A04,ITAsset,Teller Terminal,HEALTHY,Branch teller terminals network
+A05,ITAsset,Message Queue,HEALTHY,Middleware message queue
+A06,ITAsset,DR Instance,HEALTHY,Disaster recovery CBS instance
+A07,Application,CBS Core,HEALTHY,Core banking system module
+A08,Application,Loan System,HEALTHY,Loan origination and management
+A09,Application,Branch App,HEALTHY,Branch banking application
+A10,Application,Mobile Backend,HEALTHY,Mobile banking backend
+A11,Application,Internet Banking,HEALTHY,Internet banking portal
+A12,Application,ATM Switch,HEALTHY,ATM switching system
+A13,Capability,Account Management,HEALTHY,Account opening modification and closure
+A14,Capability,Transaction Engine,HEALTHY,Real-time balance and transaction posting
+A15,Capability,Loan Underwriting,HEALTHY,Retail loan underwriting and appraisal
+A16,Capability,Teller Operations,HEALTHY,Branch teller operations
+A17,Capability,Digital Banking,HEALTHY,Digital self-service banking
+A18,Capability,ATM Services,HEALTHY,Cash and ATM services
+A19,Process,Account Lifecycle,HEALTHY,End to end account lifecycle management
+A20,Process,Daily Banking Operations,HEALTHY,Intraday transaction posting and GL
+A21,Process,Loan Disbursement,HEALTHY,Retail loan disbursement process
+A22,Process,Branch Customer Service,HEALTHY,In-branch customer service process
+A23,Process,Digital Service Delivery,HEALTHY,Digital banking service delivery
+A24,Process,ATM Cash Management,HEALTHY,ATM and cash management process
+A25,Service,Retail Account Service,HEALTHY,Core retail banking account service
+A26,Service,Corporate Account Service,HEALTHY,Corporate current account service
+A27,Service,Retail Lending Service,HEALTHY,Loan disbursement and EMI collection
+A28,Service,Branch Banking Service,HEALTHY,In-branch banking service
+A29,Service,Digital Banking Service,HEALTHY,All digital self-service channels
+A30,Service,ATM Service,HEALTHY,ATM cash and balance service
+A31,SLA,Retail Availability SLA,HEALTHY,RBI mandated 99.9% monthly availability
+A32,SLA,Corporate Resolution SLA,HEALTHY,4 hour resolution SLA for corporate banking
+A33,SLA,Loan Disbursement SLA,HEALTHY,Same day disbursement for approved loans
+A34,SLA,Branch Transaction SLA,HEALTHY,15 min teller transaction completion
+A35,SLA,Digital Availability SLA,HEALTHY,99.95% digital channel availability
+A36,CustomerSegment,Retail Customers,HEALTHY,11.4M retail account holders
+A37,CustomerSegment,Corporate Clients,HEALTHY,18200 corporate accounts
+A38,CustomerSegment,Retail Borrowers,HEALTHY,2100 active loans
+A39,CustomerSegment,Branch Customers,HEALTHY,4800 branches
+A40,CustomerSegment,Digital Customers,HEALTHY,4.2M digital users
+A41,RegulatoryObligation,Customer Compensation,HEALTHY,RBI compensation for service failures
+A42,RegulatoryObligation,GL Reconciliation,HEALTHY,Daily EOD GL closure and reconciliation
+A43,RegulatoryObligation,KYC Compliance,HEALTHY,KYC verification and CKYCR sync
+A44,RegulatoryObligation,CIBIL Reporting,HEALTHY,Daily credit bureau reporting
+A45,RegulatoryObligation,ATM Uptime Mandate,HEALTHY,RBI 99% ATM uptime requirement
+A46,Regulator,Reserve Bank of India,HEALTHY,Primary banking regulator
+A47,Regulator,CKYCR Registry,HEALTHY,Central KYC registry
+A48,Regulator,TransUnion CIBIL,HEALTHY,Credit bureau
+A49,TransactionType,Savings Transactions,HEALTHY,Savings account debit and credit posting
+A50,TransactionType,Current Account Transactions,HEALTHY,Corporate current account operations
+A51,TransactionType,Loan Disbursements,HEALTHY,Retail loan disbursement transactions
+A52,TransactionType,Teller Transactions,HEALTHY,Branch cash and teller transactions
+A53,TransactionType,Digital Transfers,HEALTHY,IMPS NEFT UPI via mobile and web
+A54,TransactionType,ATM Withdrawals,HEALTHY,ATM cash withdrawal transactions
+A55,RevenueStream,CASA Float Revenue,HEALTHY,Float income from savings and current accounts
+A56,RevenueStream,Corporate Fee Revenue,HEALTHY,Transaction linked fees from corporate accounts
+A57,RevenueStream,Lending Interest Income,HEALTHY,Interest income from retail lending
+A58,RevenueStream,Branch Fee Revenue,HEALTHY,Branch service and handling charges
+A59,RevenueStream,Digital Fee Revenue,HEALTHY,Digital transaction fee income
