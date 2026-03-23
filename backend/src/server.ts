@@ -1,10 +1,14 @@
 import Fastify from "fastify";
 import dotenv from "dotenv";
+import neo4jPlugin from "./plugins/neo4j";
 
 dotenv.config();
 
 //fastify instance with built-in logger enabled
 const app = Fastify({ logger: true });
+
+//register neo4j plugins
+app.register(neo4jPlugin);
 
 app.get("/health", async (request, reply) => {
   return { status: "Ok", message: "Control Tower is running" };
