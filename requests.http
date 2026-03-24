@@ -6,3 +6,15 @@ Content-Type: application/json
   "severity": "CRITICAL",
   "description": "Oracle DB Cluster is unresponsive. All 3 RAC nodes failing to respond. ASM disk group corruption detected."
 }
+
+###
+POST http://localhost:3000/api/agent/analyze/886ba237-9e5f-455b-b66e-1ac5cde89fe1
+
+###
+PATCH http://localhost:3000/api/incidents/886ba237-9e5f-455b-b66e-1ac5cde89fe1/status
+Content-Type: application/json
+
+{
+  "status": "RESOLVED",
+  "resolution": "ASM disk group restored from backup. All RAC nodes rebooted and validated. Database integrity check passed. DR Instance deactivated."
+}

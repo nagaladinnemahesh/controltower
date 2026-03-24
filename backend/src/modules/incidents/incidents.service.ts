@@ -1,6 +1,5 @@
 import { Pool } from "pg";
 import { Incident, CreateIncidentBody } from "../../types/graph";
-import { resultTransformers } from "neo4j-driver";
 
 // create new incident - called when monitoring alert comes
 export async function createIncident(
@@ -57,9 +56,9 @@ export async function updateIncidentStatus(
 ): Promise<Incident | null> {
   const result = await pg.query<Incident>(
     `UPDATE incidents
-    SET status = $1,
+    SET status = $1::text,
         resolution = $2,
-        resolved_at = CASE WHEN $1 = 'RESOLVED' THEN NOW() ELSE NULL END
+        resolved_at = CASE WHEN $1::text = 'RESOLVED' THEN NOW() ELSE NULL END
         WHERE id = $3
         RETURNING *`,
     [status, resolution || null, id],

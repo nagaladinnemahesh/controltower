@@ -88,7 +88,7 @@ export default async function incidentRoutes(app: FastifyInstance) {
         .session()
         .run("MATCH (n {id: $id}) SET n.status = $status", {
           id: incident.affected_node_id,
-          staus: "HEALTHY",
+          status: "HEALTHY",
         });
     }
 

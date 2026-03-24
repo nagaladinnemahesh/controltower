@@ -4,6 +4,7 @@ import neo4jPlugin from "./plugins/neo4j";
 import posgresPlugin from "./plugins/postgres";
 import graphRoutes from "./modules/assets/graph.routes";
 import incidentRoutes from "./modules/incidents/incidents.routes";
+import agentRoutes from "./modules/agent/agent.routes";
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.register(posgresPlugin);
 // register routes with /api/graph prefix
 app.register(graphRoutes, { prefix: "/api/graph" });
 app.register(incidentRoutes, { prefix: "/api/incidents" });
+app.register(agentRoutes, { prefix: "/api/agent" });
 
 app.get("/health", async (request, reply) => {
   return { status: "Ok", message: "Control Tower is running" };
