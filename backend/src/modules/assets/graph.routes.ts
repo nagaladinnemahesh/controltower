@@ -4,6 +4,7 @@ import {
   getNodeById,
   getAllNodesByLabel,
   getImpactAnalysis,
+  getAllRelationships,
 } from "./graph.service";
 import { NodeLabel } from "../../types/graph";
 import { request } from "node:http";
@@ -46,5 +47,11 @@ export default async function graphRoutes(app: FastifyInstance) {
         .send({ error: `Node ${request.params.id} not found` });
     }
     return impact;
+  });
+
+  // GET /api/graph/relationships
+  app.get("/relationships", async (request, reply) => {
+    const relationships = await getAllRelationships(app.neo4j);
+    return { count: relationships.length, relationships };
   });
 }

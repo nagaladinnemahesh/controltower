@@ -1,5 +1,6 @@
 import Fastify from "fastify";
 import dotenv from "dotenv";
+import cocrs from "@fastify/cors";
 import neo4jPlugin from "./plugins/neo4j";
 import posgresPlugin from "./plugins/postgres";
 import graphRoutes from "./modules/assets/graph.routes";
@@ -10,6 +11,12 @@ dotenv.config();
 
 //fastify instance with built-in logger enabled
 const app = Fastify({ logger: true });
+
+//add cors before all route
+app.register(cocrs, {
+  origin: "http://localhost:3001",
+  methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
+});
 
 //register plugins
 app.register(neo4jPlugin);

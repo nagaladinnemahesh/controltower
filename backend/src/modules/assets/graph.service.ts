@@ -4,19 +4,9 @@ import {
   NodeLabel,
   ImpactedNode,
   ImpactAnalysis,
+  GraphRelationship,
+  RelationshipType,
 } from "../../types/graph";
-
-// helper - converts raw neo4j record to clean graphnode type
-function toGraphNode(record: any): GraphNode {
-  const node = record.get("n") || record.get("node");
-  return {
-    id: node.properities.id,
-    name: node.properities.name,
-    label: node.labels[0] as NodeLabel,
-    status: node.properities.status,
-    detail: node.properities.detail,
-  };
-}
 
 // get all nodes in the graph
 export async function getAllNodes(driver: Driver): Promise<GraphNode[]> {
@@ -33,7 +23,7 @@ export async function getAllNodes(driver: Driver): Promise<GraphNode[]> {
     // );
     return result.records.map((record) => {
       //   const node = record.get("n");
-      //   if (!node?.properities?.id) {
+      //   if (!node?.properties?.id) {
       //     console.log(
       //       `Bad record at index ${index}:`,
       //       JSON.stringify(node, null, 2),
@@ -47,6 +37,27 @@ export async function getAllNodes(driver: Driver): Promise<GraphNode[]> {
         detail: record.get("detail"),
       };
     });
+  } finally {
+    await session.close();
+  }
+}
+
+// Get all relationships for graph visualization
+export async function getAllRelationships(
+  driver: Driver,
+): Promise<GraphRelationship[]> {
+  const session = driver.session();
+  try {
+    const result = await session.run(
+      `MATCH (a)-[r]->(b) 
+       WHERE a.id IS NOT NULL AND b.id IS NOT NULL
+       RETURN a.id as from, b.id as to, type(r) as type`,
+    );
+    return result.records.map((record) => ({
+      from: record.get("from"),
+      to: record.get("to"),
+      type: record.get("type") as RelationshipType,
+    }));
   } finally {
     await session.close();
   }
