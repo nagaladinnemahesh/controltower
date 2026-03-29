@@ -11,6 +11,8 @@ import {
   analyzeIncident,
 } from "./lib/api";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+
 interface GraphNode {
   id: string;
   name: string;
@@ -38,16 +40,21 @@ interface Incident {
   resolved_at: string | null;
 }
 
+interface ImpactPath {
+  nodeIds: string[];
+}
+
 export default function Dashboard() {
   const [nodes, setNodes] = useState<GraphNode[]>([]);
   const [relationships, setRelationships] = useState<GraphRelationship[]>([]);
   const [incidents, setIncidents] = useState<Incident[]>([]);
   const [highlightedNodes, setHighlightedNodes] = useState<string[]>([]);
+  const [impactPaths, setImpactPaths] = useState<ImpactPath[]>([]);
+  const [sourceNodeId, setSourceNodeId] = useState<string | undefined>();
   const [analyzing, setAnalyzing] = useState<string | null>(null);
   const [systemStatus, setSystemStatus] = useState<
     "HEALTHY" | "DEGRADED" | "CRITICAL"
   >("HEALTHY");
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
   // Fetch graph structure once — nodes and relationships don't change
   const fetchGraphStructure = useCallback(async () => {
@@ -71,8 +78,7 @@ export default function Dashboard() {
         getAllIncidents(),
       ]);
 
-      // Only update node statuses — don't replace entire nodes array
-      // This prevents the graph from re-rendering from scratch
+      // Only update node statuses — prevents graph from restarting
       setNodes((prevNodes) =>
         prevNodes.map((prevNode) => {
           const updated = nodesData.nodes.find(
@@ -111,17 +117,32 @@ export default function Dashboard() {
     return () => clearInterval(interval);
   }, [fetchLiveData]);
 
-  // Click a node — show blast radius
+  // Click a node — show blast radius with paths
   const handleNodeClick = useCallback(async (node: GraphNode) => {
     try {
       const impact = await fetch(`${API_URL}/api/graph/impact/${node.id}`).then(
         (r) => r.json(),
       );
+
       const impactedIds = impact.impactedNodes.map((n: any) => n.node.id);
       setHighlightedNodes([node.id, ...impactedIds]);
+      setSourceNodeId(node.id);
+
+      // Extract path edges from each impacted node's pathIds
+      const paths = impact.impactedNodes.map((n: any) => ({
+        nodeIds: n.pathIds || [],
+      }));
+      setImpactPaths(paths);
     } catch (err) {
       console.error("Failed to fetch impact:", err);
     }
+  }, []);
+
+  // Clear blast radius
+  const handleClearBlastRadius = useCallback(() => {
+    setHighlightedNodes([]);
+    setImpactPaths([]);
+    setSourceNodeId(undefined);
   }, []);
 
   // Run AI agent on incident
@@ -203,15 +224,26 @@ export default function Dashboard() {
         <div className="col-span-2">
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-white font-semibold">Knowledge Graph</h2>
-            <p className="text-gray-500 text-xs">
-              Click any node to highlight blast radius
-            </p>
+            <div className="flex items-center gap-3">
+              {highlightedNodes.length > 0 && (
+                <button
+                  onClick={handleClearBlastRadius}
+                  className="text-xs text-red-400 hover:text-red-300 border border-red-800 px-2 py-1 rounded transition-colors"
+                >
+                  ✕ Clear Blast Radius
+                </button>
+              )}
+              <p className="text-gray-500 text-xs">
+                Click any node to highlight blast radius
+              </p>
+            </div>
           </div>
           <KnowledgeGraph
-            key={nodes.map((n) => n.status).join(",")}
             nodes={nodes}
             relationships={relationships}
             highlightedNodes={highlightedNodes}
+            impactPaths={impactPaths}
+            sourceNodeId={sourceNodeId}
             onNodeClick={handleNodeClick}
           />
         </div>

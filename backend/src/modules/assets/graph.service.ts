@@ -145,7 +145,8 @@ export async function getImpactAnalysis(
           impacted.detail as detail,
           labels(impacted) as labels,
           min(length(path)) as hops,
-          [n in nodes(path) | n.name] as pathNames
+          [n in nodes(path) | n.name] as pathNames,
+          [n in nodes(path) | n.id] as pathIds
    ORDER BY hops`,
       { id },
     );
@@ -161,6 +162,7 @@ export async function getImpactAnalysis(
         },
         hops: record.get("hops").toNumber(),
         path: record.get("pathNames") as string[],
+        pathIds: record.get("pathIds") as string[],
       }),
     );
 

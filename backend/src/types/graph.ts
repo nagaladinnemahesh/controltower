@@ -50,6 +50,7 @@ export interface ImpactedNode {
   node: GraphNode;
   hops: number;
   path: string[];
+  pathIds: string[];
 }
 
 // Full impact analysis response
