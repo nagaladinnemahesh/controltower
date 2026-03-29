@@ -114,7 +114,9 @@ export default function Dashboard() {
   // Click a node — show blast radius
   const handleNodeClick = useCallback(async (node: GraphNode) => {
     try {
-      const impact = await fetch(`${API_URL}/${node.id}`).then((r) => r.json());
+      const impact = await fetch(`${API_URL}/api/graph/impact/${node.id}`).then(
+        (r) => r.json(),
+      );
       const impactedIds = impact.impactedNodes.map((n: any) => n.node.id);
       setHighlightedNodes([node.id, ...impactedIds]);
     } catch (err) {
@@ -142,7 +144,7 @@ export default function Dashboard() {
   const handleResolve = useCallback(
     async (incidentId: string) => {
       try {
-        await fetch(`${API_URL}/${incidentId}/status`, {
+        await fetch(`${API_URL}/api/incidents/${incidentId}/status`, {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -206,6 +208,7 @@ export default function Dashboard() {
             </p>
           </div>
           <KnowledgeGraph
+            key={nodes.map((n) => n.status).join(",")}
             nodes={nodes}
             relationships={relationships}
             highlightedNodes={highlightedNodes}
