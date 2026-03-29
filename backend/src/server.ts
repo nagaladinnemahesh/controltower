@@ -14,7 +14,8 @@ const app = Fastify({ logger: true });
 
 //add cors before all route
 app.register(cocrs, {
-  origin: "http://localhost:3001",
+  origin: ["http://localhost:3001",
+  "https://main.d2jjlpycxlg877.amplifyapp.com"],
   methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
 });
 
