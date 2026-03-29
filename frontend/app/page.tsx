@@ -47,6 +47,7 @@ export default function Dashboard() {
   const [systemStatus, setSystemStatus] = useState<
     "HEALTHY" | "DEGRADED" | "CRITICAL"
   >("HEALTHY");
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
   // Fetch graph structure once — nodes and relationships don't change
   const fetchGraphStructure = useCallback(async () => {
@@ -113,9 +114,7 @@ export default function Dashboard() {
   // Click a node — show blast radius
   const handleNodeClick = useCallback(async (node: GraphNode) => {
     try {
-      const impact = await fetch(
-        `http://localhost:3000/api/graph/impact/${node.id}`,
-      ).then((r) => r.json());
+      const impact = await fetch(`${API_URL}/${node.id}`).then((r) => r.json());
       const impactedIds = impact.impactedNodes.map((n: any) => n.node.id);
       setHighlightedNodes([node.id, ...impactedIds]);
     } catch (err) {
@@ -143,17 +142,14 @@ export default function Dashboard() {
   const handleResolve = useCallback(
     async (incidentId: string) => {
       try {
-        await fetch(
-          `http://localhost:3000/api/incidents/${incidentId}/status`,
-          {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              status: "RESOLVED",
-              resolution: "Manually resolved from Control Tower dashboard",
-            }),
-          },
-        );
+        await fetch(`${API_URL}/${incidentId}/status`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            status: "RESOLVED",
+            resolution: "Manually resolved from Control Tower dashboard",
+          }),
+        });
         await fetchLiveData();
       } catch (err) {
         console.error("Failed to resolve:", err);
